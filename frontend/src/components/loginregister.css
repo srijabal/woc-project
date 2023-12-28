@@ -1,0 +1,52 @@
+body {
+	font-family: 'Georgia', sans-serif;
+	background-color: #f4f4f4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+	background-size: cover;
+	background-position: center;
+    
+}
+  
+  
+  .form-header {
+	background-color: #1d9d99;
+	color: #050505;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	padding: 20px;
+    border-radius: "1rem";
+  }
+  
+  .form-body {
+	padding: 20px;
+  }
+  
+  label {
+	display: block;
+	font-size: 16px;
+	margin-bottom: 8px;
+	color: #080808
+  }
+  
+  input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #040404;
+	border-radius: 4px;
+	box-sizing: border-box;
+  }
+  
+  input[type="submit"]:hover {
+	background-color: #7FFF00;
+	color: #000000b7;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+  }
+  
+ 
