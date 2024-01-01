@@ -1,27 +1,47 @@
 import React, { useState } from "react";
 import "./loginregister.css";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
-
+/*import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";*/
+import {Link, useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  /*const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");*/
+  const [values, setValues] = useState({
+    email: '',
+    password: ''
+  });
+  const {email, password } = values;
+  
+  const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
-  const handleEmailChange = (event) => {
+ /* const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
+*/
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-
+    
     try {
+      const response = await axios.post('http://localhost:3001/login', values);
+      if (response.status==200) {
+        navigate('/landing');
+      }
+      
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("An error occurred. Please try again.");
+    }
+  }
+    /*try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log(user);
@@ -33,7 +53,7 @@ function LoginForm() {
       alert("Login failed: " + errorMessage);
     }
   };
-
+  */
   return (
     <div style={{ backgroundImage: 'url("/bimg.jpg")', backgroundSize: 'cover' }}>
       <div className="body"></div>
@@ -43,17 +63,22 @@ function LoginForm() {
         <label>Email:</label>
         <input
           type="email"
+          name='email'
           value={email}
-          onChange={handleEmailChange}
+          /*onChange={handleEmailChange}*/
           placeholder="Enter your email"
+          onChange={e => setValues({...values, email: e.target.value})} 
+
         />
 
         <label>Password:</label>
         <input
           type="password"
           value={password}
-          onChange={handlePasswordChange}
+          name='password'
+          /*onChange={handlePasswordChange}*/
           placeholder="Enter your password"
+          onChange={e => setValues({...values, password: e.target.value})}
         />
 
         <input
