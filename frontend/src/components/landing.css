@@ -1,13 +1,13 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-   
+    background-image: url('bimg.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .lp-container {
-   
+   background-image: url('bimg.jpg');
     width: 100%;
     background-size: cover;
     background-position: center;

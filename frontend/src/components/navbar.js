@@ -21,7 +21,14 @@ function Navigation() {
                         <Link className="nav-link" to="/register"> Register</Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <Link to="/todo" className="dropdown-item">User Profile</Link>
-                            <Link to="/breathe" className="dropdown-item">Relaxation Corner</Link>
+                            
+                            <div className="dropdown">
+        <button className="dropbtn">Relaxation Corner</button>
+        <div className="dropdown-content">
+          <Link to="/quote" className="dropdown-item">Quotes</Link>
+          <Link to="/breathe" className="dropdown-item">Breathe</Link>
+        </div>
+      </div>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

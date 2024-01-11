@@ -1,4 +1,4 @@
-body {
+/*body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
@@ -6,8 +6,9 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-image: url('relax.png');
  
-}
+}*/
 
 main {
   
@@ -16,7 +17,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #E3C9CEFF;
+  background: rgb(212, 142, 156);
   background-size: cover;
   margin:0;
 }

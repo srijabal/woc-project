@@ -1,0 +1,51 @@
+.music-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .playlist {
+    margin-bottom: 20px;
+    text-align: center;
+    font-style:normal;
+    font-size: 30px;
+    font-display:inherit;
+  }
+  
+  .playlist-description {
+    font-size: 18px;
+  }
+  
+  .toggle-button1 {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-button1:hover {
+    background-color: #268c12;
+  }
+
+  .current-playlist-info {
+    font-size: 20px; 
+    font-style: oblique;
+    margin-top: 10px; 
+    text-align: center; 
+  }
+  
+  
+  .spotify-widget-container {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  
+  
+  

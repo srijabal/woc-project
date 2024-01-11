@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap/dist/css/bootstrap.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -80,19 +80,22 @@ const toggleTodo = (key) => {
   };
 
   const toggleItemCompletion = (key) => {
+    console.log(list);
     const updatedList = list.map((item) =>
     item.task_id === key ? { ...item, status: !item.status } : item
 
     );
+    
     setList(updatedList);
+    console.log(list);
     updateProgress();
     toggleTodo(key);
   };
 
   const updateProgress = () => {
     const totalItems = list.length;
-    const completedItems = list.filter(item => item.status).length;
-
+    const completedItems = list.filter(item => item.status ).length;
+console.log(completedItems,totalItems);
     const newProgress = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
     setProgress(newProgress);
   };
