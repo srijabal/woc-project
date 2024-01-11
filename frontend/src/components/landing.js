@@ -80,7 +80,7 @@ const LandingPage = () => {
                 <div className='content-overlay1'>
                     <h3>{message}</h3>
                     <br />
-                    <h3>Login Now to view Unwind.</h3>
+                    <h3>Login</h3>
                     <Link to="/" className='btn btn-primary'>Login</Link>
                 </div>
             )}
