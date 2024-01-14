@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LoginForm() {
-  const { setToken } = useAuth();
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -15,20 +14,15 @@ function LoginForm() {
   const { email, password } = values;
 
   const navigate = useNavigate();
-  axios.defaults.withCredentials = true;
-
 
   const handleLoginSubmit = async (event) => {
-    setToken("this is a test token");
-    navigate("/", { replace: true });
     event.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:3001/login', values);
+      localStorage.setItem('token', response.data.token);
       if (response.status == 200) {
         navigate('/landing');
       }
-
     } catch (error) {
       console.error("An error occurred:", error);
       alert("An error occurred. Please try again.");
@@ -36,9 +30,7 @@ function LoginForm() {
   }
 
   return (
-    <div style={{ backgroundImage: 'url("/bimg.jpg")', backgroundSize: 'cover' }}>
-      <div className="body"></div>
-
+    <div style={{ backgroundSize: 'cover' }}>
       <p className="form-header">Login Form</p>
       <form className="App" onSubmit={handleLoginSubmit}>
         <label>Email:</label>

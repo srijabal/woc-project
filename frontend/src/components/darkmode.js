@@ -1,4 +1,4 @@
-import Darkmode from 'darkmode-js';
+import Darkmode from 'darkmode';
 
 new Darkmode().showWidget();
 const options = {

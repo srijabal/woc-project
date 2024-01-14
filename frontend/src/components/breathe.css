@@ -10,17 +10,16 @@
  
 }*/
 
-main {
+.breathe {
   
   width: 100%;
   min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(212, 142, 156);
   background-size: cover;
-  margin:0;
-}
+gap: '10rem';
+} 
 .wrapper{
   width:410px;
   height:410px;
@@ -37,6 +36,7 @@ main {
   animation: circle 10s ease-in-out infinite;
   transform-origin: center;
   background-color: #f40ece;
+  margin-right: '10rem';
 }
 .breathing-text{
   font-size:2rem;
@@ -58,8 +58,10 @@ main {
 .message {
   background: #ffffff;
   padding: 10px;
+  width: max-content;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: '10rem';
 }
 
 

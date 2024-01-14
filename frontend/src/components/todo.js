@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import "bootstrap/dist/css/bootstrap.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,6 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import axios from "axios";
+import Navbar from './Navbar';
 
 const Todo = () => {
   const [list, setList] = useState([]);
@@ -115,7 +115,8 @@ console.log(completedItems,totalItems);
   };
 
   return (
-    <Container>
+    <>
+    <Navbar/>
       <Row
         style={{
           display: "flex",
@@ -189,7 +190,7 @@ console.log(completedItems,totalItems);
           </ListGroup>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 };
 

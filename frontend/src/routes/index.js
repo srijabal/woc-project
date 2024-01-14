@@ -5,17 +5,16 @@ import LoginForm from "../components/loginForm";
 import RegistrationForm from "../components/register";
 import Todo from "../components/todo";
 import LandingPage from "../components/landing";
-import Navigation from "../components/navbar";
+import Navbar from "../components/Navbar";
 import BreatheAnimation from "../components/breathe";
 import Quote from "../components/quotes"
-import PlaylistComponent from "../components/youtubeplaylist";
+import YoutubePlaylists from "../components/YoutubePlaylists";
 import SpotifyMusic from "../components/music";
+import Search from "../components/search";
 const Routes = () => {
   const { token } = useAuth();
-
   
-  const routesForPublic = [
-    
+  const routesForPublic = [    
     {
       path: "/login",
       element: <LoginForm />,
@@ -25,21 +24,13 @@ const Routes = () => {
       element: <RegistrationForm />,
     },
     {
-      path: "/playlists",
-      element: <PlaylistComponent />,
-    },
-    {
       path: "/landing",
       element: <LandingPage />,
     },
     {
-      path:"/navbar",
-      element: <Navigation />
-    } ,
-    {
-      path: "/music",
-      element: <SpotifyMusic />,
-    },
+      path:"/Navbar",
+      element: <Navbar />
+    } 
   ];
 
  
@@ -57,8 +48,20 @@ const Routes = () => {
           element: <BreatheAnimation />,
         },
         {
+          path: "/music",
+          element: <SpotifyMusic />,
+        },
+        {
+          path: "/Search",
+          element: <Search />,
+        },
+        {
           path: "/quotes",
           element: <Quote />,
+        },
+        {
+          path: "/playlists",
+          element: <YoutubePlaylists />,
         },
       ],
     },

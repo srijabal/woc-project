@@ -1,11 +1,14 @@
 
 import React from 'react';
 import './breathe.css';
+import Navbar from './Navbar';
 
 const BreatheAnimation = () => {
   return (
-    <main>
+    <>
+    <Navbar/>
     
+    <div className='breathe'>
       <div className='background'></div>
       <div className="wrapper">
         <div className="circle"></div>
@@ -20,7 +23,8 @@ const BreatheAnimation = () => {
         </div>
         
       
-    </main>
+    </div>
+    </>
   );
 };
 

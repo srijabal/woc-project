@@ -1,94 +1,70 @@
-import React,  { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './landing.css';
-import { Link, useNavigate } from 'react-router-dom';
-import Navigation from './navbar';
+import { Link } from 'react-router-dom';
+import Search from './search'; // Import the Search component
 import axios from 'axios';
+import Navbar from './Navbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import {CardActionArea, CardActions } from '@mui/material';
+
+function MultiActionAreaCard(props) {
+  return (
+    <Card sx={{ maxWidth: 345 }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {props.desc}
+          </Typography>
+        </CardContent>
+      <CardActions>
+        <Button size="small" color="primary">
+          Share
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}
+
+
 
 const LandingPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const[auth, setAuth] = useState(false);
-    const [message, setMessage] = useState('');
-    axios.defaults.withCredentials = true;
+  useEffect(() => {
+    localStorage.getItem('token') ? setIsLoggedIn(true) : setIsLoggedIn(false);
+  }, []);
 
-    useEffect(() => {
-        axios.get('http://localhost:3001')
-          .then(res => {
-            if (res.status === 200) {
-              if (res.data.Status === "Success") {
-                setAuth(true);
-              } else {
-                setAuth(false);
-                setMessage(res.data.Error);
-              }
-            } else {
-              setAuth(false);
-              setMessage('An error occurred. Please try again.');
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            setAuth(false);
-            setMessage('An error occurred. Please try again.');
-          });
-      }, []);
+  return (
+    <div className='lp-container' style={{ backgroundImage: 'url("/bg.jpg")', backgroundSize: 'cover' }}>
+        <Navbar/>
+      <div className='lp'>
+          <div className="landing-container">
+            <header className="header">
+              <h1>Welcome to StudyAce</h1>
+              <h4>Where Excellence is the Norm and Productivity is the Key</h4>
+            </header>
 
-      const handleDelete = () => {
-        axios.get('http://localhost:3001/logout')
-          .then(res => {
-            window.location.replace('http://localhost:3000');
-          })
-          .catch(err => console.log(err));
-      };
-
-    return (
-        <div className='lp-container' style={{ backgroundImage: 'url("/bg.jpg")', backgroundSize: 'cover' }}>
-        
-            <div className='lp' >
-                <Navigation />
-                {auth ? (
-                    <div className="landing-container">
-                    <header className="header">
-                        <h1>Welcome to StudyAce</h1>
-                        <h4>Where Excellence is the Norm and Productivity is the Key</h4>
-                    </header>
-
-                    <section className='features'>
-                        <div className="feature-box">
-                            <h3>User Profile</h3>
-                            <p>Todo Lists, Progress Tracker, Create Notes, Import Youtube playlists</p>
-                        </div>
-                        <div className="feature-box">
-                            <h3>AI problem solver</h3>
-                        </div>
-                        <div className="feature-box">
-                            <h3>Relaxation Corner</h3>
-                            <p>Soothing music, Inhalation Exhalation gif, Dark/Light Mode, Quotes Generator</p>
-                        </div>
-                        <div className="feature-box">
-                            <h3>JEE and NEET Student Community</h3>
-                        </div>
-                        <br />
-                        <button className='btn btn-danger' onClick={handleDelete}>Logout</button>
-                    </section>
-
-                    <footer className="footer">
-                        <h4>&copy;StudyAce </h4>
-                    </footer>
-                </div>
-
-                ) : (
-                <div className='content-overlay1'>
-                    <h3>{message}</h3>
-                    <br />
-                    <h3>Login</h3>
-                    <Link to="/" className='btn btn-primary'>Login</Link>
-                </div>
-            )}
-                
-            </div>
-        </div>
-    );
+          {
+            isLoggedIn ? <section className='features' >
+              <MultiActionAreaCard title={"User Profile"} desc={"Todo Lists, Progress Tracker, Import Youtube playlists"}/>
+              <MultiActionAreaCard title={"Relaxation Corner"} desc={"Soothing music, Inhalation Exhalation gif, Dark/Light Mode, Quotes Generator"}/>
+              <MultiActionAreaCard title={"AI problem solver"} desc={"Search for your doubts and find all the answers you need"}/>
+              <MultiActionAreaCard title={"JEE and NEET Community"} desc={"Connect with like-minded peers and gain more knowledge"}/>
+            </section>
+            : null}
+              <br />
+            { <footer className="footer" style={{marginTop: "25rem", position: 'bottom'}}>
+              <h4>&copy;StudyAce </h4>
+            </footer> }
+          </div>
+      </div>
+    </div>
+  );
 };
 
 export default LandingPage;
-

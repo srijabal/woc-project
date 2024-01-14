@@ -4,9 +4,9 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const app = express();
 const port = 3001;
-const salt = 10;
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+
 require("dotenv").config();
 
 app.use(cors({
@@ -24,8 +24,6 @@ const connection = mysql.createConnection({
   password: process.env.CONNECTION_PASSWORD ,
   database: process.env.CONNECTION_NAME ,
 
- 
-
 });
 
 
@@ -38,47 +36,78 @@ connection.connect((err) => {
   }
 });
 
+//middleware to verify user
+const verifyUser = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ Error: "Access denied" });
+  const verified = jwt.verify(token, 'thisIsASecretKey');
+  if(!verified) return res.status(401).json({ Error: "Access denied" });
+  req.email = verified.email;
+  next();
+ };
 
+// apis for authentication
 
-app.post('/register', (req, res) => {
+// 1. login
 
-  const sql = "INSERT INTO users (name, email, password) VALUES (?)";
-  bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-    if (err) return res.json({ Error: "Error for hashing password" });
-
-    const values = [
-      req.body.name,
-
-      req.body.email,
-      hash
-    ];
-
-    connection.query(sql, [values], (err, result) => {
-      if (err) {
-        console.error('Error inserting data:', err);
-        return res.json({ Error: "Inserting data error in server" });
-      }
-      console.log('Data inserted successfully');
-      return res.json({ Status: "Values entered successfully" });
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const sql = `SELECT * FROM users WHERE email = ?`;
+  connection.query(sql, [email], (err, result) => {
+    if (err) {
+      console.error('Error fetching data:', err);
+      return res.status(404).json({ Error: "Error fetching data" });
+    }
+    if (result.length === 0) return res.status(404).json({ Error: "User not found" });
+    bcrypt.compare(password.toString(), result[0].password, (err, isMatch) => {
+      if (err) return res.status(401).json({ Error: "Error for comparing password" });
+      if (!isMatch) return res.status(401).json({ Error: "Invalid credentials" });
+      const token = jwt.sign({ email }, 'thisIsASecretKey', { expiresIn: '1h' });
+      return res.json({ status: "Login successful", token });
     });
   });
 });
 
-const verifyUser = (req, res, next) => {
-  next();
- 
-};
+// 2. register
+
+const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
+
+app.post('/register', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  const selectSql = `SELECT * FROM users WHERE email = ?`;
+  connection.query(selectSql, [email], (err, result) => {
+    if (err) {
+      console.error('Error fetching data:', err);
+      return res.status(500).json({ Error: `Error fetching data: ${err.message}` });
+    }
+
+    if (result.length !== 0) {
+      return res.status(400).json({ Error: "User already exists" });
+    }
+
+    bcrypt.hash(password.toString(), salt, (hashErr, hash) => {
+      if (hashErr) {
+        console.error('Error hashing password:', hashErr);
+        return res.status(500).json({ Error: `Error hashing password: ${hashErr.message}` });
+      }
+
+      const insertSql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
+      connection.query(insertSql, [name, email, hash], (insertErr) => {
+        if (insertErr) {
+          console.error('Error inserting data:', insertErr);
+          return res.status(500).json({ Error: `Error inserting data: ${insertErr.message}` });
+        }
+        
+        return res.json({ status: "Registration successful" });
+      });
+    });
+  });
+});
 
 
-
-
-
-
-app.get('/', verifyUser, (req, res) => {
-  return res.json({ Status: "Success", email: req.email });
-})
-
-
+//apis for tasks
 app.get('/tasks', verifyUser, (req, res) => {
   connection.query('SELECT * FROM todo', (queryErr, results) => {
     if (queryErr) {
@@ -110,6 +139,7 @@ app.delete('/tasks/:id', verifyUser, (req, res) => {
     res.sendStatus(200);
   });
 });
+
 app.post('/updatetasks', (req, res) => {
   const { key } = req.body;
 
@@ -137,95 +167,113 @@ app.post('/updatetasks', (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  console.log('Received a login request');
-  const sql = 'SELECT * FROM users WHERE email = ?';
-  connection.query(sql, [email], (err, data) => {
-    console.log(1)
-    if (err) {
-      console.error('Login error in server:', err);
-      return res.status(500).json({ Error: "Login error in server" });
-    }
+// apis for youtube playlists
 
-    if (data.length > 0) {
-      console.log(2)
-      bcrypt.compare(password.toString(), data[0].password, (err, response) => {
-        if (err) {
-          console.error('Password compare error:', err);
-          return res.status(500).json({ Error: "Password compare error" });
-        }
-        if (response) {
-          console.log(3)
-          const Email = data[0].email;
-          const token = jwt.sign({
-            email: data[0].email,
-            test: 'hello'
-          }, "gcuiohjhgutyiouytr687yhed", { expiresIn: '1d' });
-          res.cookie('token', token);
-          console.log(token)
-          return res.status(200).json({ message: "login successful" });
-        } else {
-          return res.json({ Error: "Password not matched" });
-        }
-      })
+// 1. get all youtube playlists for user
+app.get('/playlists', verifyUser, async (req, res)=> {
+  const userEmail = req.email || '';
+  console.log(req.email);
+ const sql = `SELECT playlists FROM users WHERE email = ?`;
+  connection.query(sql, [userEmail], (err, result) => {
+  if (err) {
+    console.error('Error fetching playlists:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } else {
+    res.json(result[0].playlists);
+  } 
+  }
+)})
+
+// 2. add youtube playlists for  user
+app.post('/playlists', verifyUser, (req, res) => {
+  const { playlists } = req.body;
+  const userEmail = req.email || '';
+
+
+  const getCurrentPlaylists = `SELECT playlists FROM users WHERE email = ?`;
+
+  connection.query(getCurrentPlaylists, [userEmail], (error, results) => {
+    if (error) {
+      console.error('Failed to fetch current playlists:', error);
+      res.status(500).json({ Status: 'Error', Error: 'Failed to fetch current playlists.' });
     } else {
-      return res.json({ Error: "Email doesn't exist" });
+      
+      const currentPlaylists = results[0].playlists || ''; 
+      const updatedPlaylists = currentPlaylists + (currentPlaylists ? ',' : '') + playlists;
+
+    
+      const updatePlaylists = `UPDATE users SET playlists = ? WHERE email = ?`;
+
+      connection.query(updatePlaylists, [updatedPlaylists, userEmail], (updateError, updateResults) => {
+        if (updateError) {
+          console.error('Failed to add playlists:', updateError);
+          res.status(500).json({ Status: 'Error', Error: 'Failed to add playlists.' });
+        } else {
+          res.json({ Status: 'Success', message: 'Playlists added successfully.' });
+        }
+      });
     }
-  })
-})
-app.get('/', (req, res) => {
-
-  return res.json({ message: "Server started" });
-})
-
-//logout
-
-app.get('/logout', (req,res) => {
-  res.clearCookie('token');
-  return res.redirect('/');
+  });
 });
 
-app.post("/test", (req,res) => {
-  console.log(req.headers);
-})
+// 3. delete youtube playlists for a user
+app.delete('/playlists/:playlistId', verifyUser, (req, res) => {
+  const { playlistId } = req.params;
+  const userEmail = req.email || '';
+
+  
+  const getCurrentPlaylists = `SELECT playlists FROM users WHERE email = ?`;
+
+  connection.query(getCurrentPlaylists, [userEmail], (error, results) => {
+
+    if (error) {
+      console.error('Failed to fetch current playlists:', error);
+      res.status(500).json({ Status: 'Error', Error: 'Failed to fetch current playlists.' });
+    } else {
+     
+      const currentPlaylists = results[0].playlists || ''; 
+      const updatedPlaylists = currentPlaylists.split(',').filter((id) => id !== playlistId).join(',');
+
+     
+      const updatePlaylists = `UPDATE users SET playlists = ? WHERE email = ?`;
+
+      connection.query(updatePlaylists, [updatedPlaylists, userEmail], (updateError, updateResults) => {
+        if (updateError) {
+          console.error('Failed to remove playlist:', updateError);
+          res.status(500).json({ Status: 'Error', Error: 'Failed to remove playlist.' });
+        } else {
+          res.json({ Status: 'Success', message: 'Playlist removed successfully.' });
+        }
+      });
+    }
+  });
+  }
+);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-//youtube playlist
+// app.get('/google-search', async (req, res) => {
+//   const { q } = req.query;
 
-const API_KEY = 'AIzaSyAEzxCy_VMGZKeODaac8fZinAIUgWSC8ww';
-app.get('/playlists/:playlistIds', async (req, res) => {
-  const { playlistIds } = req.params;
-
-  const playlistIdArray = playlistIds.split(',');
-
-  try {
-    const promises = playlistIdArray.map(async (playlistId) => {
-      const response = await axios.get(
-        `https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=10&id=${playlistId}&key=${API_KEY}`
-      );
-      return response.data.items[0]; 
-    });
-
-    const playlistsArray = await Promise.all(promises);
-    res.json(playlistsArray);
-  } catch (error) {
-    console.error('Error fetching playlists:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.post('/playlists', (req, res) => {
-  const { playlistIds } = req.body;
+//   try {
+//     const { data } = await axios.get('https://www.googleapis.com/customsearch/v1', {
+//       params: {
+//         key: process.env.React_App_Google_Search_Api_Key,
+//         cx: process.env.React_App_Search_Engine_Id,
+//         q,
+//       },
+//     });
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
 
   
-  console.log('Adding playlists:', playlistIds);
+//   // Add DB query to insert playlist
 
-  res.status(200).json({ message: 'Playlists added successfully' });
+//   res.status(200).json({ message: 'Playlists added successfully' });
   
-});
-
+// });
 

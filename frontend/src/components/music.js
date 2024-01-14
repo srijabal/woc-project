@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Navbar from './Navbar';
 
 import "./music.css";
 
@@ -19,22 +20,20 @@ function SpotifyMusic() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="music-container">
       <div className="playlist">
         <h2>Current Playlist: {currentPlaylist.name}</h2>
         <p>Description: {currentPlaylist.description}</p>
       </div>
 
-      <button className="toggle-button1" onClick={handleTogglePlaylist}>
-        Change Playlist
-      </button>
-
       <div className="spotify-widget-container">
         <iframe
           title="Spotify Playlist"
           style={{ borderRadius: '12px' }}
           src={`https://open.spotify.com/embed/playlist/${currentPlaylist.id}`}
-          width="100%"
+          width="60%"
           height="352"
           allowFullScreen=""
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -42,8 +41,13 @@ function SpotifyMusic() {
         />
       </div>
 
+      <button className="toggle-button1" onClick={handleTogglePlaylist}>
+        Change Playlist
+      </button>
+
       <p className="current-playlist-info">{`Now playing: ${currentPlaylist.name} `}</p>
     </div>
+    </>
   );
 }
 

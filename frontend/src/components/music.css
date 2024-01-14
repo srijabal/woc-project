@@ -26,6 +26,7 @@
     cursor: pointer;
     border-radius: 5px;
     margin-bottom: 20px;
+    margin-top: 2rem;
   }
   
   .toggle-button1:hover {
@@ -41,7 +42,9 @@
   
   
   .spotify-widget-container {
-    width: 100%;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
     border-radius: 12px;
     overflow: hidden;
   }
