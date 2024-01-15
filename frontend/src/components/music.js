@@ -7,7 +7,7 @@ const playlists = [
   { id: '37i9dQZF1DX8Uebhn9wzrS', name: 'Chill Lofi', description: 'Gentle beats to hug your thoughts.' },
   { id: '4odWnvBgtEoV4xGK6BAZNO', name: 'Soothing Beats', description: 'Uncomplicated melodies, pure and sweet.' },
   { id: '0GXLTT5gVkPG1AAoT4hCyq', name: 'Calm Vibes', description: 'Light breezes of calmness in musical form.' },
-  { id: '2jgiLjtaJFeLjhla80IIsW', name: 'Relaxing Tunes', description: '"Floating on clouds of relaxation with each beat.' },
+  { id: '2jgiLjtaJFeLjhla80IIsW', name: 'Relaxing Tunes', description: 'Floating on clouds of relaxation with each beat.' },
   { id: '6OpvhaJmmbdhqjplBKUGeJ', name: 'Calm Study', description: 'Gentle tunes to accompany your focused mind.' },
 ];
 

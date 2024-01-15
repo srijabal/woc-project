@@ -11,10 +11,17 @@ import Quote from "../components/quotes"
 import YoutubePlaylists from "../components/YoutubePlaylists";
 import SpotifyMusic from "../components/music";
 import Search from "../components/search";
+import ChatComponent from "../components/solver";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const Routes = () => {
-  const { token } = useAuth();
-  
+  const { token } = useAuth();  
+
   const routesForPublic = [    
+    {
+      path: "/",
+      element: <LandingPage />,
+    },
     {
       path: "/login",
       element: <LoginForm />,
@@ -22,10 +29,6 @@ const Routes = () => {
     {
       path: "/register",
       element: <RegistrationForm />,
-    },
-    {
-      path: "/landing",
-      element: <LandingPage />,
     },
     {
       path:"/Navbar",
@@ -62,6 +65,10 @@ const Routes = () => {
         {
           path: "/playlists",
           element: <YoutubePlaylists />,
+        },
+        {
+          path: "/solver",
+          element: <ChatComponent/>,
         },
       ],
     },

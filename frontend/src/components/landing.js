@@ -1,36 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import './landing.css';
 import { Link } from 'react-router-dom';
-import Search from './search'; // Import the Search component
+import Search from './search';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import {CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea, CardActions } from '@mui/material';
+import DarkMode from './darkmode';
 
 function MultiActionAreaCard(props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {props.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {props.desc}
-          </Typography>
-        </CardContent>
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {props.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {props.desc.map((item, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && ' | '} 
+              {item.link ? (
+                <Link to={item.link}>{item.text}</Link>
+              ) : (
+                item.text
+              )}
+            </React.Fragment>
+          ))}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary">
-          Share
+          
         </Button>
       </CardActions>
     </Card>
   );
 }
-
-
 
 const LandingPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,31 +48,59 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className='lp-container' style={{ backgroundImage: 'url("/bg.jpg")', backgroundSize: 'cover' }}>
-        <Navbar/>
-      <div className='lp'>
-          <div className="landing-container">
-            <header className="header">
-              <h1>Welcome to StudyAce</h1>
-              <h4>Where Excellence is the Norm and Productivity is the Key</h4>
-            </header>
-
+    
+    <div className='lp-container' style={{ backgroundImage: 'url("/bg.jpg")', backgroundSize: 'cover'}}>
+      <Navbar />
+        <div style={{
+          flexGrow: 1,
+          height: '80vh',
+        }}>
+          <header className="header">
+            <h1>Welcome to StudyAce</h1>
+            <h5>Where Excellence is the Norm and Productivity is the Key</h5>
+          </header>
           {
-            isLoggedIn ? <section className='features' >
-              <MultiActionAreaCard title={"User Profile"} desc={"Todo Lists, Progress Tracker, Import Youtube playlists"}/>
-              <MultiActionAreaCard title={"Relaxation Corner"} desc={"Soothing music, Inhalation Exhalation gif, Dark/Light Mode, Quotes Generator"}/>
-              <MultiActionAreaCard title={"AI problem solver"} desc={"Search for your doubts and find all the answers you need"}/>
-              <MultiActionAreaCard title={"JEE and NEET Community"} desc={"Connect with like-minded peers and gain more knowledge"}/>
-            </section>
-            : null}
-              <br />
-            { <footer className="footer" style={{marginTop: "25rem", position: 'bottom'}}>
-              <h4>&copy;StudyAce </h4>
-            </footer> }
-          </div>
-      </div>
+            isLoggedIn ? (
+              <section className='features' >
+                <MultiActionAreaCard
+                  title={"User Profile"}
+                  desc={[
+                    { text: "Todo Lists", link: "/todo" },
+                    { text: "Progress Tracker", link: "/todo" },
+                    { text: "Import Youtube playlists", link: "/playlists" },
+                  ]}
+                  link="/user-profile"
+                />
+                
+                <MultiActionAreaCard
+                  title={"Relaxation Corner"}
+                  desc={[
+                    { text: "Soothing music", link: "/music" },
+                    { text: "Random Quotes Generator", link: "/quotes" },
+                    { text: "Inhalation Exhalation gif", link: "/breathe" },
+                  ]}
+                  link="/user-profile"
+                />
+                <MultiActionAreaCard
+                  title={"Problem Solver"}
+                  desc={[
+                    { text: "Search for your doubts and find all the answers you need", link:"/search" },
+                  ]}
+                  link="/user-profile"
+                />
+              </section>
+            ) : null
+          }
+        </div>
+          <footer className="footer" style={{
+            width: '100%',
+            textAlign: 'center',
+          }}>
+            <h4>&copy;StudyAce </h4>
+          </footer>
     </div>
   );
 };
 
 export default LandingPage;
+

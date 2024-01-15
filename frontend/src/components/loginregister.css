@@ -1,7 +1,7 @@
 body {
 	font-family: 'Georgia', sans-serif;
-	background-color: #f4f4f4;
-	/* display: flex; */
+	background-color: 	#ffe1e1;
+	
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
@@ -13,7 +13,7 @@ body {
   
   
   .form-header {
-	background-color: #0f920a;
+	background-color:#0db2e8;
 	color: #050505;
 	font-size: 24px;
 	font-weight: bold;

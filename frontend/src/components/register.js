@@ -33,7 +33,17 @@ function RegistrationForm() {
    
 
   return (
-    <div>
+    <div  style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center",
+      flexDirection: "column",
+      margin: "auto",
+      marginTop: "10%",
+      width: "20%",
+      padding: "10px",
+      border: "2px solid #000",
+    }}>
       <p className="form-header">Registration Form</p>
       <form className="App" onSubmit={handleRegistrationSubmit}>
         <label>Name:</label>
@@ -63,7 +73,7 @@ function RegistrationForm() {
 
         <input
           type="submit"
-          style={{ backgroundColor: "#7FFF00" }}
+          style={{ backgroundColor: "#0db2e8" }}
           value="Register"
         />
       </form>

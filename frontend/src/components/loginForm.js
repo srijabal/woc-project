@@ -21,7 +21,7 @@ function LoginForm() {
       const response = await axios.post('http://localhost:3001/login', values);
       localStorage.setItem('token', response.data.token);
       if (response.status == 200) {
-        navigate('/landing');
+        navigate('/');
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -30,7 +30,17 @@ function LoginForm() {
   }
 
   return (
-    <div style={{ backgroundSize: 'cover' }}>
+    <div style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center",
+      flexDirection: "column",
+      margin: "auto",
+      marginTop: "10%",
+      width: "20%",
+      padding: "10px",
+      border: "2px solid #000",
+    }}>
       <p className="form-header">Login Form</p>
       <form className="App" onSubmit={handleLoginSubmit}>
         <label>Email:</label>
@@ -56,7 +66,7 @@ function LoginForm() {
 
         <input
           type="submit"
-          style={{ backgroundColor: "#7FFF00" }}
+          style={{ backgroundColor: "#0db2e8" }}
           value="Login"
         />
       </form>

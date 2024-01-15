@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
-    window.location.href = '/landing';
+    window.location.href = '/';
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

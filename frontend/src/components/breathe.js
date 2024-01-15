@@ -7,7 +7,8 @@ const BreatheAnimation = () => {
   return (
     <>
     <Navbar/>
-    
+   
+            <h2 style={{ color: '#3a9b96',display: 'flex',flexDirection:"column", alignItems: 'center', justifyContent: 'center' }}>Inhalation-Exhalation gif</h2>
     <div className='breathe'>
       <div className='background'></div>
       <div className="wrapper">

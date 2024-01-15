@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import './quotes.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -44,7 +43,7 @@ function Quote() {
         <>
         <Navbar />
           <div style={{display: 'flex',flexDirection:"column", alignItems: 'center', justifyContent: 'center' }}>
-            <h2 style={{ color: '#ff6b81'}}>Random Quote Generator</h2>
+            <h2 style={{ color: '#3a9b96'}}>Random Quote Generator</h2>
             <div className="container">
               {quote && (
                 <div className="quote-container">

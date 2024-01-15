@@ -24,6 +24,7 @@ const connection = mysql.createConnection({
   password: process.env.CONNECTION_PASSWORD ,
   database: process.env.CONNECTION_NAME ,
 
+ 
 });
 
 
@@ -38,7 +39,7 @@ connection.connect((err) => {
 
 //middleware to verify user
 const verifyUser = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization;
   if (!token) return res.status(401).json({ Error: "Access denied" });
   const verified = jwt.verify(token, 'thisIsASecretKey');
   if(!verified) return res.status(401).json({ Error: "Access denied" });
@@ -169,10 +170,9 @@ app.post('/updatetasks', (req, res) => {
 
 // apis for youtube playlists
 
-// 1. get all youtube playlists for user
+// 1. get all youtube playlists for a user
 app.get('/playlists', verifyUser, async (req, res)=> {
   const userEmail = req.email || '';
-  console.log(req.email);
  const sql = `SELECT playlists FROM users WHERE email = ?`;
   connection.query(sql, [userEmail], (err, result) => {
   if (err) {
@@ -184,7 +184,7 @@ app.get('/playlists', verifyUser, async (req, res)=> {
   }
 )})
 
-// 2. add youtube playlists for  user
+// 2. add youtube playlists for a user
 app.post('/playlists', verifyUser, (req, res) => {
   const { playlists } = req.body;
   const userEmail = req.email || '';
@@ -197,11 +197,11 @@ app.post('/playlists', verifyUser, (req, res) => {
       console.error('Failed to fetch current playlists:', error);
       res.status(500).json({ Status: 'Error', Error: 'Failed to fetch current playlists.' });
     } else {
-      
+     
       const currentPlaylists = results[0].playlists || ''; 
       const updatedPlaylists = currentPlaylists + (currentPlaylists ? ',' : '') + playlists;
 
-    
+     
       const updatePlaylists = `UPDATE users SET playlists = ? WHERE email = ?`;
 
       connection.query(updatePlaylists, [updatedPlaylists, userEmail], (updateError, updateResults) => {
@@ -234,7 +234,7 @@ app.delete('/playlists/:playlistId', verifyUser, (req, res) => {
       const currentPlaylists = results[0].playlists || ''; 
       const updatedPlaylists = currentPlaylists.split(',').filter((id) => id !== playlistId).join(',');
 
-     
+      
       const updatePlaylists = `UPDATE users SET playlists = ? WHERE email = ?`;
 
       connection.query(updatePlaylists, [updatedPlaylists, userEmail], (updateError, updateResults) => {
@@ -254,26 +254,4 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// app.get('/google-search', async (req, res) => {
-//   const { q } = req.query;
-
-//   try {
-//     const { data } = await axios.get('https://www.googleapis.com/customsearch/v1', {
-//       params: {
-//         key: process.env.React_App_Google_Search_Api_Key,
-//         cx: process.env.React_App_Search_Engine_Id,
-//         q,
-//       },
-//     });
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-
-  
-//   // Add DB query to insert playlist
-
-//   res.status(200).json({ message: 'Playlists added successfully' });
-  
-// });
 

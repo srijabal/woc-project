@@ -3,14 +3,91 @@ import axios from 'axios';
 import Navbar from './Navbar';
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
+const fetchVideosFromPlaylist = async (playlistId, nextPageToken = '') => {
+  try {
+    const response = await axios.get('https://www.googleapis.com/youtube/v3/playlistItems', {
+      params: {
+        part: 'snippet',
+        playlistId,
+        key: API_KEY,
+        maxResults: 3,
+        pageToken: nextPageToken,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    throw error;
+  }
+};
+
+const Videos = ({ playlistId }) => {
+  const [videos, setVideos] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState('');
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const data = await fetchVideosFromPlaylist(playlistId);
+        setVideos(data.items);
+        setNextPageToken(data.nextPageToken);
+      } catch (error) {
+        console.log('Error fetching videos:', error);
+      }
+    };
+
+    fetchVideos();
+  }, [playlistId]);
+
+  const handleShowMore = async () => {
+    try {
+      const data = await fetchVideosFromPlaylist(playlistId, nextPageToken);
+      setVideos((prevVideos) => [...prevVideos, ...data.items]);
+      setNextPageToken(data.nextPageToken);
+    } catch (error) {
+      console.error('Error fetching more videos:', error);
+    }
+  };
+  return (
+ 
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '2rem',
+    }}>
+      {videos.map((video) => (
+      <div key={video.id}>
+        <div style={{
+          marginBottom: '1rem',
+        }}>{video.snippet.title}</div>
+        <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
+            title={video.snippet.title}
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+         </div>
+      ))}
+        {nextPageToken && (
+          <button onClick={handleShowMore} style={{
+            width: 'fit-content',
+            alignSelf: 'center',
+          }}>Show More</button>
+      )}
+    </div>
+
+  );
+};
+
 const YoutubePlaylists = () => {
   const [currentPlaylists, setCurrentPlaylists] = useState([]);
   const [playlists, setPlaylists] = useState('');
 
-  console.log('currentPlaylists', currentPlaylists);
-
   const fetchPlaylists = async () => {
     try {
+      console.log('fetching playlists');
       const response = await axios.get(`http://localhost:3001/playlists`);
       const playlistIds = response.data.split(',').map(playlist => playlist.trim());
       const playlistsWithInfo = await Promise.all(playlistIds.map(id => getPlaylistInfo(id)));
@@ -52,7 +129,7 @@ const YoutubePlaylists = () => {
       console.log('validPlaylists', validPlaylists);
       if (validPlaylists.length !== 0) {
         await axios.post(`http://localhost:3001/playlists`, { playlists: validPlaylists.join(',') });
-  
+
         await fetchPlaylists();
       }
       setPlaylists('');
@@ -60,8 +137,6 @@ const YoutubePlaylists = () => {
       console.error('Error adding playlist:', error);
     }
   };
-  
-  
 
   const handleDeletePlaylist = async (playlistId) => {
     try {
@@ -77,10 +152,9 @@ const YoutubePlaylists = () => {
   }, []);
 
   return (
-    
     <div>
       <Navbar />
-      <h2>User Playlists</h2>
+      = <h2 style={{ color: '#3a9b96',display: 'flex',flexDirection:"column", alignItems: 'center', justifyContent: 'center' }}>User Playlists</h2>
       <div>
         <label>Add Playlist IDs (comma-separated): </label>
         <input
@@ -92,15 +166,33 @@ const YoutubePlaylists = () => {
       </div>
       <p>Here are your playlists:</p>
       <div>
-        {currentPlaylists.map((playlist) => (
-          <div key={playlist.id}>
-            <a href={`https://www.youtube.com/playlist?list=${playlist.id}`} target='_blank'>
-            <h3>{playlist.info.title}</h3>
-            <img src={playlist.info.thumbnail} alt={playlist.info.title} />
-            </a>
-            <div onClick={()=>handleDeletePlaylist(playlist.id)} style={{
+        {currentPlaylists.map((playlist, index) => (
+          <div key={playlist.id} style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem',
+            borderBottom: '1px solid black',
+            marginBottom: '2rem',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+            }}>    
+            <div> Playlist {index + 1}: <a 
+            href={`https://www.youtube.com/playlist?list=${playlist.id}`}
+            target="_blank"
+            rel="noreferrer"
+            >{playlist.info.title}</a></div>
+              
+            <div style={{
+              color: 'red',
               cursor: 'pointer',
-            }}> X </div>
+             }}
+              onClick={()=>handleDeletePlaylist(playlist.id)}>Delete this playlist</div>
+            </div>
+            <Videos playlistId={playlist.id} />
+            <br/>
           </div>
         ))}
       </div>

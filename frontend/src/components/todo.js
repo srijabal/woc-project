@@ -101,7 +101,7 @@ console.log(completedItems,totalItems);
   };
 
   const getProgressMessage = () => {
-    if (progress === 100) {
+    if (progress == 100) {
       return "Congratulations! You've completed all tasks!";
     } else if (progress >= 90) {
       return "Amazing! You're almost done champion!";
