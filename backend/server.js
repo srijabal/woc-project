@@ -18,12 +18,23 @@ app.use(express.json());
 
 const connection = mysql.createConnection({
 
-  host: process.env.CONNECTION_HOST ,
+ /* host: process.env.CONNECTION_HOST ,
   port: process.env.CONNECTION_PORT ,
   user: process.env.CONNECTION_USER ,
   password: process.env.CONNECTION_PASSWORD ,
   database: process.env.CONNECTION_NAME ,
+*/
+  host: process.env.connection_HOST || "127.0.0.1",
+  port: process.env.connection_PORT || 3306,
+  user: process.env.connection_USER || "root",
+  password: process.env.connection_PASSWORD || "durgapur123",
+  database: process.env.connection_NAME || "studyace"
 
+/*host:  "127.0.0.1",
+port:  3306,
+user:  "root",
+password: "durgapur123",
+database: "studyace",*/
  
 });
 
