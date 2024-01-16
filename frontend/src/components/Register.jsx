@@ -4,8 +4,7 @@ import "./loginregister.css"
 import axios from 'axios';
 import { Link, useNavigate} from 'react-router-dom';
 
-
-function RegistrationForm() {
+function Register() {
    
   const [values, setValues] = useState({
     name: '',
@@ -73,7 +72,7 @@ function RegistrationForm() {
 
         <input
           type="submit"
-          style={{ backgroundColor: "#0db2e8" }}
+          style={{ backgroundColor: "#6DA4AA" }}
           value="Register"
         />
       </form>
@@ -81,4 +80,4 @@ function RegistrationForm() {
   );
 }
 
-export default RegistrationForm;
+export default Register;

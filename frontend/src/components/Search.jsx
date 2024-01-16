@@ -1,7 +1,23 @@
 import React, { useState } from 'react';
-import { GoogleSearch } from './googlesearch';
 import Navbar from './Navbar';
 import './search.css';
+import axios from 'axios';
+
+const googleSearch = async (term) => {
+  const { data } = await axios.get('https://www.googleapis.com/customsearch/v1',
+    
+    {
+      params: {
+        key: process.env.React_App_Google_Search_Api_Key,
+        cx: process.env.React_App_Search_Engine_Id,
+        q: term,
+      },
+    }
+  );
+
+  return data;
+};
+
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState(null);
@@ -9,7 +25,7 @@ const Search = () => {
 
   const handleSearch = async () => {
     try {
-      const result = await GoogleSearch(searchTerm);
+      const result = await googleSearch(searchTerm);
       setSearchResults(result.items);
       setError(null);
     } catch (err) {

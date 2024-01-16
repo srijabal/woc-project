@@ -1,7 +1,6 @@
 body {
 	font-family: 'Georgia', sans-serif;
 	background-color: 	#ffe1e1;
-	
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
@@ -10,10 +9,9 @@ body {
 	background-position: center;
     
 }
-  
-  
+
   .form-header {
-	background-color:#0db2e8;
+	background-color:#6DA4AA;
 	color: #050505;
 	font-size: 24px;
 	font-weight: bold;
@@ -43,7 +41,7 @@ body {
   }
   
   input[type="submit"]:hover {
-	background-color: #7FFF00;
+	background-color: #6DA4AA;
 	color: #000000b7;
 	cursor: pointer;
 	transition: background-color 0.3s ease;

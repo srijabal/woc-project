@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
-function Quote() {
+function Quotes() {
   const [quote, setQuote] = useState('');
   const [index, setIndex] = useState(0);
   const [quotesList, setQuotesList] = useState([]);
@@ -48,7 +48,7 @@ function Quote() {
               {quote && (
                 <div className="quote-container">
                   <p className="quote-text">{quote}</p>
-                  <button1 onClick={getNextQuote}>Click me to get Next Quote</button1>
+                  <div onClick={getNextQuote} className="button1">Click me to get Next Quote</div>
                 </div>
               )}
             </div>
@@ -58,4 +58,4 @@ function Quote() {
     }
 
 
-export default Quote; 
+export default Quotes; 

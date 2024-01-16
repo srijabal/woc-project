@@ -124,12 +124,9 @@ const YoutubePlaylists = () => {
   const handleAddPlaylist = async () => {
     try {
       const newPlaylists = playlists.split(',').map(playlist => playlist.trim());
-      console.log('newPlaylists', newPlaylists);
       const validPlaylists = newPlaylists.filter(playlist => playlist.length > 0);
-      console.log('validPlaylists', validPlaylists);
       if (validPlaylists.length !== 0) {
         await axios.post(`http://localhost:3001/playlists`, { playlists: validPlaylists.join(',') });
-
         await fetchPlaylists();
       }
       setPlaylists('');
@@ -164,13 +161,14 @@ const YoutubePlaylists = () => {
         />
         <button onClick={handleAddPlaylist}>Add Playlist</button>
       </div>
-      <p>Here are your playlists:</p>
+      <h3>Here are your playlists:</h3>
       <div>
         {currentPlaylists.map((playlist, index) => (
           <div key={playlist.id} style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem',
+            alignItems:'center',
             borderBottom: '1px solid black',
             marginBottom: '2rem',
           }}>
@@ -178,16 +176,27 @@ const YoutubePlaylists = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
+              fontSize: '1.2em',  
+              color: 'blue',  
+              
             }}>    
-            <div> Playlist {index + 1}: <a 
+            <div> Playlist {index + 1}: 
+            <a 
             href={`https://www.youtube.com/playlist?list=${playlist.id}`}
             target="_blank"
             rel="noreferrer"
-            >{playlist.info.title}</a></div>
+            style={{
+              fontSize: '1.2em',  
+              color: 'blue',  
+              textDecoration: 'underline', 
+            }}
+          >
+            {playlist.info.title}</a></div>
               
             <div style={{
               color: 'red',
               cursor: 'pointer',
+
              }}
               onClick={()=>handleDeletePlaylist(playlist.id)}>Delete this playlist</div>
             </div>

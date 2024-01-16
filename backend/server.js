@@ -18,24 +18,11 @@ app.use(express.json());
 
 const connection = mysql.createConnection({
 
- /* host: process.env.CONNECTION_HOST ,
+  host: process.env.CONNECTION_HOST ,
   port: process.env.CONNECTION_PORT ,
   user: process.env.CONNECTION_USER ,
   password: process.env.CONNECTION_PASSWORD ,
-  database: process.env.CONNECTION_NAME ,
-*/
-  host: process.env.connection_HOST || "127.0.0.1",
-  port: process.env.connection_PORT || 3306,
-  user: process.env.connection_USER || "root",
-  password: process.env.connection_PASSWORD || "durgapur123",
-  database: process.env.connection_NAME || "studyace"
-
-/*host:  "127.0.0.1",
-port:  3306,
-user:  "root",
-password: "durgapur123",
-database: "studyace",*/
- 
+  database: process.env.NAME ,
 });
 
 
@@ -52,7 +39,7 @@ connection.connect((err) => {
 const verifyUser = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) return res.status(401).json({ Error: "Access denied" });
-  const verified = jwt.verify(token, 'thisIsASecretKey');
+  const verified = jwt.verify(token, process.env.SECRET_KEY);
   if(!verified) return res.status(401).json({ Error: "Access denied" });
   req.email = verified.email;
   next();
@@ -74,7 +61,7 @@ app.post('/login', (req, res) => {
     bcrypt.compare(password.toString(), result[0].password, (err, isMatch) => {
       if (err) return res.status(401).json({ Error: "Error for comparing password" });
       if (!isMatch) return res.status(401).json({ Error: "Invalid credentials" });
-      const token = jwt.sign({ email }, 'thisIsASecretKey', { expiresIn: '1h' });
+      const token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: '1h' });
       return res.json({ status: "Login successful", token });
     });
   });
@@ -154,8 +141,7 @@ app.delete('/tasks/:id', verifyUser, (req, res) => {
 
 app.post('/updatetasks', (req, res) => {
   const { key } = req.body;
-
- 
+  
   connection.query('SELECT status FROM todo WHERE task_id = ?', [key], (selectErr, result) => {
     if (selectErr) {
       res.status(500).json({ error: selectErr.message });

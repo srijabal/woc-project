@@ -1,19 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
-import LoginForm from "../components/loginForm";
-import RegistrationForm from "../components/register";
-import Todo from "../components/todo";
-import LandingPage from "../components/landing";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import Todo from "../components/Todo";
+import LandingPage from "../components/LandingPage";
 import Navbar from "../components/Navbar";
-import BreatheAnimation from "../components/breathe";
-import Quote from "../components/quotes"
+import Breathe from "../components/Breathe";
+import Quotes from "../components/Quotes"
 import YoutubePlaylists from "../components/YoutubePlaylists";
-import SpotifyMusic from "../components/music";
-import Search from "../components/search";
-import ChatComponent from "../components/solver";
+import Music from "../components/Music";
+import Search from "../components/Search";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+
 const Routes = () => {
   const { token } = useAuth();  
 
@@ -24,11 +25,11 @@ const Routes = () => {
     },
     {
       path: "/login",
-      element: <LoginForm />,
+      element: <Login/>,
     },
     {
       path: "/register",
-      element: <RegistrationForm />,
+      element: <Register/>,
     },
     {
       path:"/Navbar",
@@ -48,11 +49,11 @@ const Routes = () => {
         },
         {
           path: "/breathe",
-          element: <BreatheAnimation />,
+          element: <Breathe />,
         },
         {
           path: "/music",
-          element: <SpotifyMusic />,
+          element: <Music />,
         },
         {
           path: "/Search",
@@ -60,16 +61,13 @@ const Routes = () => {
         },
         {
           path: "/quotes",
-          element: <Quote />,
+          element: <Quotes />,
         },
         {
           path: "/playlists",
           element: <YoutubePlaylists />,
         },
-        {
-          path: "/solver",
-          element: <ChatComponent/>,
-        },
+        
       ],
     },
   ];

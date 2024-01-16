@@ -1,13 +1,12 @@
 body {
     font-family: 'Quicksand', serif;
     margin: 0;
-    /* display: flex; */
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-size: cover;
     background-position: center;
-    background-color: 	#ffe1e1; 
+    background-image: url(../assets/landing.jpg);
 }
 
 a { color: inherit; } 
@@ -73,6 +72,6 @@ a { color: inherit; }
     text-align: center;
     margin-top: 3.125rem;
     padding: 0.625rem;
-    background-color: #76aadb;
+    background-color: #6DA4AA;
     align-self: flex-end;
 }

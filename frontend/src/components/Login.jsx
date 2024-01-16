@@ -6,7 +6,7 @@ import { useAuth } from "../provider/authProvider";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function LoginForm() {
+function Login() {
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -66,7 +66,7 @@ function LoginForm() {
 
         <input
           type="submit"
-          style={{ backgroundColor: "#0db2e8" }}
+          style={{ backgroundColor: "#6DA4AA" }}
           value="Login"
         />
       </form>
@@ -74,4 +74,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default Login;

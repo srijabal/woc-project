@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './landing.css';
 import { Link } from 'react-router-dom';
-import Search from './search';
+import Search from './Search';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Typography from '@mui/material/Typography';
@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardActionArea, CardActions } from '@mui/material';
-import DarkMode from './darkmode';
+
 
 function MultiActionAreaCard(props) {
   return (
@@ -33,7 +33,6 @@ function MultiActionAreaCard(props) {
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">
-          
         </Button>
       </CardActions>
     </Card>
@@ -65,9 +64,8 @@ const LandingPage = () => {
                 <MultiActionAreaCard
                   title={"User Profile"}
                   desc={[
-                    { text: "Todo Lists", link: "/todo" },
-                    { text: "Progress Tracker", link: "/todo" },
-                    { text: "Import Youtube playlists", link: "/playlists" },
+                    { text: "Create Todo Lists", link: "/todo" },
+                    { text: "Import and Store Youtube Playlists", link: "/playlists" },
                   ]}
                   link="/user-profile"
                 />
@@ -75,7 +73,7 @@ const LandingPage = () => {
                 <MultiActionAreaCard
                   title={"Relaxation Corner"}
                   desc={[
-                    { text: "Soothing music", link: "/music" },
+                    { text: "Soothing Music", link: "/music" },
                     { text: "Random Quotes Generator", link: "/quotes" },
                     { text: "Inhalation Exhalation gif", link: "/breathe" },
                   ]}

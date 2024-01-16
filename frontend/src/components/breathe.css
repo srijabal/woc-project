@@ -1,17 +1,4 @@
-/*body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-image: url('relax.png');
- 
-}*/
-
 .breathe {
-  
   width: 100%;
   min-height: 70vh;
   display: flex;
@@ -36,7 +23,7 @@ gap: '10rem';
   border-radius: 50%;
   animation: circle 10s ease-in-out infinite;
   transform-origin: center;
-  background-color: #f40ece;
+  background-color: #bd68af;
   margin-right: '10rem';
 }
 .breathing-text{

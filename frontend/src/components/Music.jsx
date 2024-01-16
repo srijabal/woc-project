@@ -11,7 +11,7 @@ const playlists = [
   { id: '6OpvhaJmmbdhqjplBKUGeJ', name: 'Calm Study', description: 'Gentle tunes to accompany your focused mind.' },
 ];
 
-function SpotifyMusic() {
+function Music() {
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
   const currentPlaylist = playlists[currentPlaylistIndex];
 
@@ -51,4 +51,4 @@ function SpotifyMusic() {
   );
 }
 
-export default SpotifyMusic;
+export default Music;
